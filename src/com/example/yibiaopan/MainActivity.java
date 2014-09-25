@@ -20,10 +20,16 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		DashboardView customView = new DashboardView(this);
-		customView.executeTask(new int[] { 0, 6000, 12000, 24000, 36000, 38000,
-				40000 }, 1008881, 2899800);
-		setContentView(customView);
+		// DashboardView customView = new DashboardView(this);
+		// customView.executeTask(new int[] { 0, 6000, 12000, 24000, 36000,
+		// 38000,
+		// 40000 }, 1008881, 2899800);
+		// setContentView(customView);
+		setContentView(R.layout.main);
+		DashboardView dashBoardView = (DashboardView) findViewById(R.id.mini_dash_board);
+
+		dashBoardView.executeTask(new int[] { 0, 6000, 12000, 24000, 36000,
+				38000, 40000 }, 9008881, 39000);
 	}
 
 }

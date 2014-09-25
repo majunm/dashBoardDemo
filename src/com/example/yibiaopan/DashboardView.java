@@ -374,7 +374,8 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 			canvas.drawBitmap(numberList.get(result[i]).getBitmap(),
 					(screenW - oneNumberWidth * numberLength) / 2
 							+ oneNumberWidth * i + i * 2,
-					mDashBoardBitmap.getHeight() - oneNumberWidth * 5, paint);
+					mDashBoardBitmap.getHeight() - oneNumberWidth * 4
+							+ oneNumberHeight, paint);
 		}
 
 	}
@@ -390,8 +391,8 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(40);
 		canvas.drawText(text, (screenW - length) / 2,
-				mDashBoardBitmap.getHeight() - oneNumberWidth * 5
-						+ oneNumberHeight * 1.5f + 2f, paint);
+				mDashBoardBitmap.getHeight() - oneNumberWidth * 4
+						+ oneNumberHeight * 2.5f + 2f, paint);
 		// canvas.drawBitmap(numberList.get(0).getBitmap(),
 		// (screenW - oneNumberWidth) / 2, mDashBoardBitmap.getHeight()
 		// - oneNumberWidth * 5, paint);
