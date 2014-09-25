@@ -3,6 +3,7 @@ package com.example.yibiaopan;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -192,9 +193,10 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 */
 	public void beginDrawDashBoard() {
 		drawBackgroundBitmap();
-		rotateCoreCode();
 		drawElectricQuantityTitle();
 		drawElectricQuantity();
+		drawGradulation();
+		rotateCoreCode();
 	}
 
 	/**
@@ -386,6 +388,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 		String text = "累计用电量";
 		float length = paint.measureText(text, 0, text.length());
 		paint.setColor(Color.BLACK);
+		paint.setTextSize(40);
 		canvas.drawText(text, (screenW - length) / 2,
 				mDashBoardBitmap.getHeight() - oneNumberWidth * 5
 						+ oneNumberHeight * 1.5f + 2f, paint);
@@ -410,7 +413,31 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @description :画表盘刻度值
 	 */
 	public void drawGradulation() {
+		canvas.drawText(coordinate[0] + "", oneNumberHeight * 4
+				+ oneNumberWidth + 5, mDashBoardBitmap.getWidth(), paint);
+		canvas.drawText(coordinate[6] + "",
+				oneNumberHeight * 5 + mLadderBitmap.getWidth() / 2,
+				mDashBoardBitmap.getWidth(), paint);
 
+		canvas.drawText(coordinate[1] + "", oneNumberHeight * 3 + 5,
+				mDashBoardBitmap.getWidth() / 2 + oneNumberHeight * 2.5f, paint);
+		canvas.drawText(coordinate[5] + "",
+				oneNumberHeight * 6 + mLadderBitmap.getWidth() / 2
+						+ oneNumberWidth, mDashBoardBitmap.getWidth() / 2
+						+ oneNumberHeight * 2.5f, paint);
+
+		canvas.drawText(coordinate[2] + "", oneNumberHeight * 4
+				+ oneNumberWidth + 5, mDashBoardBitmap.getWidth() / 2
+				- oneNumberHeight - 5, paint);
+		canvas.drawText(coordinate[4] + "",
+				oneNumberHeight * 5 + mLadderBitmap.getWidth() / 2,
+				mDashBoardBitmap.getWidth() / 2 - oneNumberHeight - 5, paint);
+
+		float length = paint.measureText((coordinate[3] + ""), 0,
+				(coordinate[3] + "").length());
+		canvas.drawText(coordinate[3] + "", (screenW - length) / 2,
+				dashBoardInitialPointer + oneNumberHeight + oneNumberWidth,
+				paint);
 	}
 
 	/**
