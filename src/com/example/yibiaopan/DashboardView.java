@@ -133,6 +133,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 		// R.drawable.signsec_dj_ll_blue).copy(Bitmap.Config.ARGB_8888,
 		// true);
 		rect = new Rect(0, 0, screenW, screenH);
+		thread = new Thread(this);
 		Log.e("majun95598", "screenW:" + screenW);
 		Log.e("majun95598", "screenH:" + screenH);
 		if (!thread.isAlive()) { // 判断是不是 在执行run方法
@@ -586,7 +587,6 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 		holder.addCallback(this);
 		paint = new Paint();
 		paint.setAntiAlias(true);
-		thread = new Thread(this);
 		paint.setColor(Color.argb(255, 207, 60, 11));
 		paint.setTextSize(22);
 		ovalPaint = new Paint();
@@ -632,7 +632,6 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 			textSize = 20;
 			screenType = 2;
 			break;
-
 		default:
 			textSize = 22;
 			break;
