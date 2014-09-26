@@ -5,9 +5,9 @@
     android:orientation="vertical" >
 
     <com.example.yibiaopan.DashboardView
-        android:layout_marginTop="@dimen/dashboard_margin_top"
         android:id="@+id/mini_dash_board"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dashboard_margin_top" />
 
 </LinearLayout>
