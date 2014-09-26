@@ -65,6 +65,14 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	private int electricQuantityGradientVlaue; // 电量渐变值
 	private int realValue;// 实际值
 	private Paint ovalPaint;
+	private int textSize = 20;
+	private int screenType; // 屏幕类型
+
+	public int[] result = new int[10];// 存放电量
+	public int[] coordinate = new int[7];
+	public int max;
+	public int numberLength;
+	private RectF oval; // 矩形
 
 	/******************************* field *******************************/
 
@@ -118,6 +126,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 							- ladderInitialPointer);
 			oneNumberWidth = numberList.get(0).getBitmap().getWidth();
 			oneNumberHeight = numberList.get(0).getBitmap().getHeight();
+			setFontSize(screenW, screenH);
 		}
 
 		// mBackGroundBitmap = BitmapFactory.decodeResource(getResources(),
@@ -193,9 +202,9 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 */
 	public void beginDrawDashBoard() {
 		drawBackgroundBitmap();
-		drawElectricQuantityTitle();
-		drawElectricQuantity();
-		drawGradulation();
+		drawElectricQuantityTitle(screenType);
+		drawElectricQuantity(screenType);
+		drawGradulation(screenType);
 		rotateCoreCode();
 	}
 
@@ -268,12 +277,6 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 		}
 		return result;
 	}
-
-	public int[] result = new int[10];// 存放电量
-	public int[] coordinate = new int[7];
-	public int max;
-	public int numberLength;
-	private RectF oval; // 矩形
 
 	/**
 	 * 
@@ -359,7 +362,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @data :2014年9月25日下午1:35:09
 	 * @description :画用电量
 	 */
-	public void drawElectricQuantity() {
+	public void drawElectricQuantity(int screenType) {
 		for (int i = 0; i < numberLength; i++) {
 			// 5550
 			result[i] = Integer.parseInt(String.valueOf(number).charAt(i) + ""); // 数据矫正
@@ -370,12 +373,28 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 			result[i - 1] = temporary % 10; // 1000 = 4 3 2 1
 			temporary = temporary / 10;
 		}
-		for (int i = 0; i < numberLength; i++) {
-			canvas.drawBitmap(numberList.get(result[i]).getBitmap(),
-					(screenW - oneNumberWidth * numberLength) / 2
-							+ oneNumberWidth * i + i * 2,
-					mDashBoardBitmap.getHeight() - oneNumberWidth * 4
-							+ oneNumberHeight, paint);
+		switch (screenType) {
+		case 1:
+			for (int i = 0; i < numberLength; i++) {
+				canvas.drawBitmap(numberList.get(result[i]).getBitmap(),
+						(screenW - oneNumberWidth * numberLength) / 2
+								+ oneNumberWidth * i + i * 2,
+						mDashBoardBitmap.getHeight() - oneNumberWidth * 4
+								+ oneNumberHeight, paint);
+			}
+			break;
+		case 2:
+			for (int i = 0; i < numberLength; i++) {
+				canvas.drawBitmap(numberList.get(result[i]).getBitmap(),
+						(screenW - oneNumberWidth * numberLength) / 2
+								+ oneNumberWidth * i + i * 2,
+						mDashBoardBitmap.getHeight() - oneNumberWidth * 5
+								+ oneNumberHeight * 0, paint);
+			}
+			break;
+
+		default:
+			break;
 		}
 
 	}
@@ -385,17 +404,27 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @data :2014年9月25日上午11:16:43
 	 * @description :画累计用电量 (标示作用)
 	 */
-	public void drawElectricQuantityTitle() {
+	public void drawElectricQuantityTitle(int screenType) {
 		String text = "累计用电量";
 		float length = paint.measureText(text, 0, text.length());
 		paint.setColor(Color.BLACK);
-		paint.setTextSize(40);
-		canvas.drawText(text, (screenW - length) / 2,
-				mDashBoardBitmap.getHeight() - oneNumberWidth * 4
-						+ oneNumberHeight * 2.5f + 2f, paint);
-		// canvas.drawBitmap(numberList.get(0).getBitmap(),
-		// (screenW - oneNumberWidth) / 2, mDashBoardBitmap.getHeight()
-		// - oneNumberWidth * 5, paint);
+		paint.setTextSize(textSize);
+		switch (screenType) {
+		case 1:
+			canvas.drawText(text, (screenW - length) / 2,
+					mDashBoardBitmap.getHeight() - oneNumberWidth * 4
+							+ oneNumberHeight * 2.5f + 2f, paint);
+			break;
+		case 2:
+			canvas.drawText(text, (screenW - length) / 2,
+					mDashBoardBitmap.getHeight() - oneNumberWidth * 5
+							+ oneNumberHeight * 1.5f + 2f, paint);
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 	/**
@@ -413,32 +442,69 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @data :2014年9月25日上午11:27:35
 	 * @description :画表盘刻度值
 	 */
-	public void drawGradulation() {
-		canvas.drawText(coordinate[0] + "", oneNumberHeight * 4
-				+ oneNumberWidth + 5, mDashBoardBitmap.getWidth(), paint);
-		canvas.drawText(coordinate[6] + "",
-				oneNumberHeight * 5 + mLadderBitmap.getWidth() / 2,
-				mDashBoardBitmap.getWidth(), paint);
-
-		canvas.drawText(coordinate[1] + "", oneNumberHeight * 3 + 5,
-				mDashBoardBitmap.getWidth() / 2 + oneNumberHeight * 2.5f, paint);
-		canvas.drawText(coordinate[5] + "",
-				oneNumberHeight * 6 + mLadderBitmap.getWidth() / 2
-						+ oneNumberWidth, mDashBoardBitmap.getWidth() / 2
-						+ oneNumberHeight * 2.5f, paint);
-
-		canvas.drawText(coordinate[2] + "", oneNumberHeight * 4
-				+ oneNumberWidth + 5, mDashBoardBitmap.getWidth() / 2
-				- oneNumberHeight - 5, paint);
-		canvas.drawText(coordinate[4] + "",
-				oneNumberHeight * 5 + mLadderBitmap.getWidth() / 2,
-				mDashBoardBitmap.getWidth() / 2 - oneNumberHeight - 5, paint);
-
+	public void drawGradulation(int screenType) {
 		float length = paint.measureText((coordinate[3] + ""), 0,
 				(coordinate[3] + "").length());
-		canvas.drawText(coordinate[3] + "", (screenW - length) / 2,
-				dashBoardInitialPointer + oneNumberHeight + oneNumberWidth,
-				paint);
+		switch (screenType) {
+		case 1:
+			canvas.drawText(coordinate[0] + "", oneNumberHeight * 4
+					+ oneNumberWidth + 5, mDashBoardBitmap.getWidth(), paint);
+			canvas.drawText(coordinate[6] + "", oneNumberHeight * 5
+					+ mLadderBitmap.getWidth() / 2,
+					mDashBoardBitmap.getWidth(), paint);
+
+			canvas.drawText(coordinate[1] + "", oneNumberHeight * 3 + 5,
+					mDashBoardBitmap.getWidth() / 2 + oneNumberHeight * 2.5f,
+					paint);
+			canvas.drawText(coordinate[5] + "", oneNumberHeight * 6
+					+ mLadderBitmap.getWidth() / 2 + oneNumberWidth,
+					mDashBoardBitmap.getWidth() / 2 + oneNumberHeight * 2.5f,
+					paint);
+
+			canvas.drawText(coordinate[2] + "", oneNumberHeight * 4
+					+ oneNumberWidth + 5, mDashBoardBitmap.getWidth() / 2
+					- oneNumberHeight - 5, paint);
+			canvas.drawText(coordinate[4] + "", oneNumberHeight * 5
+					+ mLadderBitmap.getWidth() / 2, mDashBoardBitmap.getWidth()
+					/ 2 - oneNumberHeight - 5, paint);
+
+			canvas.drawText(coordinate[3] + "", (screenW - length) / 2,
+					dashBoardInitialPointer + oneNumberHeight + oneNumberWidth,
+					paint);
+			break;
+		case 2:
+			canvas.drawText(coordinate[0] + "", oneNumberHeight * 3 + 10,
+					mDashBoardBitmap.getWidth() - oneNumberHeight
+							- oneNumberWidth + 10, paint);
+			canvas.drawText(coordinate[6] + "", oneNumberHeight * 4
+					+ mLadderBitmap.getWidth() / 2 - 1,
+					mDashBoardBitmap.getWidth() - oneNumberHeight
+							- oneNumberWidth + 10, paint);
+
+			canvas.drawText(coordinate[1] + "", oneNumberHeight * 2 + 5
+					- oneNumberWidth + 10, mDashBoardBitmap.getWidth() / 2
+					+ oneNumberHeight * 1.5f - oneNumberWidth, paint);
+			canvas.drawText(coordinate[5] + "", oneNumberHeight * 5
+					+ mLadderBitmap.getWidth() / 2 + oneNumberWidth,
+					mDashBoardBitmap.getWidth() / 2 + oneNumberHeight * 1.5f
+							- oneNumberWidth, paint);
+
+			canvas.drawText(coordinate[2] + "", oneNumberHeight * 3
+					+ oneNumberWidth * 0 + 10, mDashBoardBitmap.getWidth() / 2
+					- oneNumberHeight * 3 + 5, paint);
+			canvas.drawText(coordinate[4] + "", oneNumberHeight * 4
+					+ mLadderBitmap.getWidth() / 2, mDashBoardBitmap.getWidth()
+					/ 2 - oneNumberHeight * 3 + 5, paint);
+
+			canvas.drawText(coordinate[3] + "", (screenW - length) / 2,
+					dashBoardInitialPointer + oneNumberHeight + oneNumberWidth,
+					paint);
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 	/**
@@ -550,6 +616,27 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 				R.drawable.nine));
 		setFocusable(true);
 		setFocusableInTouchMode(true);
+	}
+
+	/**
+	 * @data :2014年9月26日上午8:42:14
+	 * @description :设置字体大小
+	 */
+	private void setFontSize(int width, int height) {
+		switch (width) {
+		case 1080:
+			textSize = 40;
+			screenType = 1;
+			break;
+		case 540:
+			textSize = 20;
+			screenType = 2;
+			break;
+
+		default:
+			textSize = 22;
+			break;
+		}
 	}
 
 }
