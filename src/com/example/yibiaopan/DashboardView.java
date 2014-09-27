@@ -285,7 +285,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @param number
 	 * @description :设置累计电量啦
 	 */
-	public void setNumber(int number) {
+	private void setNumber(int number) {
 		this.number = Math.abs(number);
 		numberLength = String.valueOf(this.number).length();
 		Log.e("majun8", "numberLength---->" + numberLength);
@@ -310,7 +310,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @param progress
 	 * @description :设置进度,占仪表盘进度的多少
 	 */
-	public void setProgress(int progress) {
+	private void setProgress(int progress) {
 		calculateDegree(Math.abs(progress));
 		calculateGradientValue();
 		if (!isBeginPerformLogical()) {
@@ -325,7 +325,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 *            长度必须为7 不要捣乱
 	 * @description :设置刻度值
 	 */
-	public void setCoordinate(int[] coordinate) {
+	private void setCoordinate(int[] coordinate) {
 		if (coordinate.length < 7) {
 			Toast.makeText(context, "只接受长度为7的数组!", Toast.LENGTH_SHORT).show();
 			return;
