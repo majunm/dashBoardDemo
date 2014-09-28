@@ -61,7 +61,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	private int oneNumberHeight; // 一个数字的宽度
 	private Context context;
 
-	private boolean beginPerformLogical = false;
+	private boolean beginPerformLogical = false; // 执行逻辑标志
 	private int electricQuantityGradientVlaue; // 电量渐变值
 	private int realValue;// 实际值
 	private Paint ovalPaint;
@@ -529,7 +529,7 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * 
 	 * @data :2014年9月25日下午12:23:21
 	 * @param coordinate
-	 *            刻度
+	 *            刻度,数组长度必须为7
 	 * @param number
 	 *            当前电量
 	 * @param progress
