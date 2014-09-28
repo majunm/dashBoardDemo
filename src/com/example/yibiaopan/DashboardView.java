@@ -89,14 +89,22 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 		init(context);
 	}
 
+	private boolean runTask = true;
+
 	@Override
 	public void run() {
 		while (flag) {
 			long start = System.currentTimeMillis();
 			if (beginPerformLogical) {
 				logicalDispose();
+				beginDraw();
+			} else {
+				if (runTask) {
+					beginDraw();
+					runTask = false;
+				}
 			}
-			beginDraw();
+
 			long end = System.currentTimeMillis();
 			if (end - start < 40) {
 				SystemClock.sleep(40 - (end - start));
@@ -214,8 +222,11 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @description :刻画背景图片
 	 */
 	public void drawBackgroundBitmap() {
-		drawArc();
-		// drawLadderBitmap();
+		if (runTask) {
+			drawLadderBitmap();
+		} else {
+			drawArc();
+		}
 		canvas.drawBitmap(mDashBoardBitmap, dashBoardInitialPointer,
 				dashBoardInitialPointer, paint);
 	}
@@ -364,6 +375,9 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @description :画用电量
 	 */
 	public void drawElectricQuantity(int screenType) {
+		if (this.number == 0) {
+			setNumber(0);
+		}
 		for (int i = 0; i < numberLength; i++) {
 			// 5550
 			result[i] = Integer.parseInt(String.valueOf(number).charAt(i) + ""); // 数据矫正
@@ -444,6 +458,9 @@ public class DashboardView extends SurfaceView implements Callback, Runnable {
 	 * @description :画表盘刻度值
 	 */
 	public void drawGradulation(int screenType) {
+		if (coordinate[1] == 0) {
+			coordinate = new int[] { 0, 1800, 3600, 4000, 4400, 8800, 13200 };
+		}
 		float length = paint.measureText((coordinate[3] + ""), 0,
 				(coordinate[3] + "").length());
 		switch (screenType) {

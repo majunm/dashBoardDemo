@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 		DashboardView dashBoardView = (DashboardView) findViewById(R.id.mini_dash_board);
 
 		dashBoardView.executeTask(new int[] { 0, 6000, 12000, 24000, 36000,
-				38000, 40000 }, 9008881, 39000);
+				38000, 40000 }, 10001, 39000);
 	}
 
 }
